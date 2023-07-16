@@ -1,5 +1,5 @@
 import soundfile as sf
-
+import numpy as np
 
 def waveform_freq(SIGNAL, Fs):
     if SIGNAL == '?':
