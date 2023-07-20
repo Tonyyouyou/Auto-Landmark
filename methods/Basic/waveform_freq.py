@@ -33,7 +33,7 @@ def waveform_freq(SIGNAL, Fs):
                 raise  # Raise other exceptions
     elif isinstance(SIGNAL, (int, float)):  # If SIGNAL is a numeric type
         arr = SIGNAL  # Use SIGNAL as audio signal data directly
-        fs0 = Fs  # Use the given sampling rate Fs
+        fs0 = fs0  # Use the given sampling rate Fs
     else:
         raise TypeError(f'waveform_freq: Unable to process SIGNAL: Must be numeric or string, not {type(SIGNAL)} type.')
 

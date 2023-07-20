@@ -14,7 +14,8 @@ def wavread_freq(file_path,  Fs):
     try:
         # Use the librosa.load function to read the .wav audio file
         # sr=None means to keep the original sampling rate
-        sig, sr = librosa.load(file_path, sr= Fs)
+        _, sr = librosa.load(file_path, sr=None)
+        sig, _ = librosa.load(file_path, sr=Fs)
 
         # Return the read audio signal and sampling rate
         return sig, sr
