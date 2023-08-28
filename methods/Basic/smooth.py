@@ -5,6 +5,9 @@
 import numpy as np
 from scipy import signal
 import argparse
+from methods.Basic.DTChk_Len1 import DTChk_Len1
+from methods.Basic.isscalar import isscalar
+from methods.Basic.is_vec import is_vec
 
 
 def _hanning(n):
@@ -15,33 +18,6 @@ def _hanning(n):
     w = .5 * (1 - np.cos(2 * np.pi * (np.arange(m) + 1) / (n + 1)))
     w = np.concatenate((w, w[::-1]))
     return w
-
-
-def isscalar(x):
-    """
-    Helper function to mimic MATLAB's isscalar function.
-    """
-    if (np.isscalar(x) or np.isinf(x)).any():
-        return True
-    return False
-
-
-def is_vec(x):
-    """
-    Helper function to mimic MATLAB's is_vec function.
-    """
-    if (np.isinf or np.sum(np.array(x.shape) == 1) >= x.ndim - 1):
-        return True
-    return False
-
-
-def DTChk_Len1(A, oknans=False):
-    if np.size(A) == 0:
-        return True
-    elif oknans:
-        return np.all(np.logical_or(np.isnan(A), np.logical_and(np.imag(A) == 0, np.logical_and(A > 0, A == np.fix(A)))))
-    else:
-        return np.all(np.logical_and(np.imag(A) == 0, np.logical_and(A > 0, A == np.fix(A))))
 
 
 def smooth2_noscalar(im, knl):
@@ -67,7 +43,7 @@ def smooth2_noscalar(im, knl):
         if knl[0] == 1:
             kernel = kernel.T
     else:
-        kernel = (knl / np.sum(knl)).astype(im.dtype)
+        kernel = knl / np.sum(knl)
 
     if len(im.shape) == 1:
         return signal.convolve(im.reshape((im.shape[0], 1)), kernel, mode='same')
@@ -115,24 +91,25 @@ def smooth(sig, knl, check_type=False):
         Smoothed signal.
 
     """
-    if len(knl) == 1 and not np.isinf(knl[0]):
-        knl = int(knl[0])
-    elif np.isinf(knl[0]):
-        knl = np.inf
-    else:
-        knl = np.asarray(knl)
-
-    sig = np.asarray(sig)
+    # if len(knl) == 1 and not np.isinf(knl[0]):
+    #     knl = int(knl[0])
+    # elif len(knl) == 1 and np.isinf(knl[0]):
+    #     knl = np.inf
+    # else:
+    #     knl = np.asarray(knl)
 
     if check_type:
         # Type check, the kernel must be an integer or a vector of length > 1.
-        if not is_vec(knl):
+        if not is_vec(np.asarray(knl)) and not isinstance(knl, int) or (isinstance(knl, list) and len(knl) <= 1):
             raise ValueError(
                 f'Kernel must be Integer or vector (length > 1). Instead got {knl}.')
         # Sanity check, a ector kernel must have non-zero sum, with no Inf or NaN elements
         if not isscalar(knl) and (np.isnan(knl).any() or np.isinf(knl).any() or sum(knl) == 0):
             raise ValueError(
                 'Vector kernel must have non-zero sum, with no Inf or NaN elements.')
+        
+    sig = np.asarray(sig)
+    knl = np.asarray(knl) if not isscalar(knl) else knl
 
     if np.isscalar(knl):
         if not knl or abs(knl) == 1:
@@ -147,6 +124,7 @@ def smooth(sig, knl, check_type=False):
             knl = knl.reshape((knl.shape[0], 1))
         else:
             knl = _hanning(-knl)
+            knl = knl.reshape((knl.shape[0], 1))
     elif len(knl.shape) == 1:
         # This does not do anything in python, but kept to align with the MATLAB code
         knl = knl.reshape((knl.shape[0], 1))
