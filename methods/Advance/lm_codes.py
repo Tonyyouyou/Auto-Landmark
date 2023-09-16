@@ -3,15 +3,15 @@ from .lm_labels import lm_labels
 
 def lm_codes(*args):
     """
-    将地标标签或地标字符标记转换为对应的地标索引或地标字符标记。
+    Converts a landmark label or landmark character marker to a corresponding landmark index or landmark character marker.
 
-    参数：
-    *args：str 或 array_like
-        地标标签或地标字符标记的输入，可以传入多个字符串参数或数组参数。
+    Parameters：
+    *args：str or array_like
+        The input to the landmark label or landmark character tag can be passed multiple string arguments or array arguments。
 
-    返回：
+    Return：
     tuple
-        转换后的地标索引或地标字符标记的元组。
+        The converted tuple of the landmark index or landmark character tag。
     """
     # 定义地标标签与索引的映射关系
     code_label_mapping = {
@@ -35,15 +35,14 @@ def lm_codes(*args):
         'END_SEG': '-T'
     }
 
-    # 将字符串参数转换为数组参数
+   
     array_args = [np.array([code_label_mapping[arg.upper()]]) if isinstance(arg, str) else arg for arg in args]
 
-    # 调用 lm_labels 函数，并将结果存储在列表中
+
     outargs = []
     for arg in array_args:
         outargs.extend(lm_labels(arg))
 
-    # 将列表转换为元组并返回
     return outargs
 
 # # 示例：测试 lm_codes 函数
