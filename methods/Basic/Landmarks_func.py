@@ -290,11 +290,12 @@ class Localized_peaks:
         return landmarks, pp_arr/1000, pn_arr/1000, peak_file
 
 class P_landmark:
-    def __init__(self, Landmarks_base_obj, thr):
-        self.Landmarks_base_obj = Landmarks_base_obj(thr=thr)
+    def __init__(self, Landmarks_base_obj):
+        self.Landmarks_base_obj = Landmarks_base_obj
         self.label = 'p'
 
     def find_P_landmark(self):
+        p_ladnmark_dict = {}
         [Fs, Y, T, Y_len, ms_s] = self.Landmarks_base_obj.wav_read_info()
         frame_shift = 10  # Frame shift in ms
         frame_L = 25  # Frame length in ms
@@ -350,3 +351,30 @@ class P_landmark:
 
         pLandmark_n_idx = get_indexes(-1, up_Ef_sm_norm_jumps)
         pLandmark_n_time = T[np.array(pLandmark_n_idx)] * 1000
+
+
+        # save all the band 1 peaks
+        peak_p = pd.DataFrame({'time': pLandmark_p_time/1000,
+                            'lmk': 'p+',
+                            'direction': 1,})
+        peak_n = pd.DataFrame({'time': pLandmark_n_time/1000,
+                            'lmk': 'p-',
+                            'direction': -1,})
+        peak_file = pd.concat((peak_p, peak_n), axis=0).sort_values(['time'])
+
+        p_ladnmark_dict['p+'] = np.array(peak_file[peak_file['lmk']=='p+']['time'])
+        p_ladnmark_dict['p-'] = np.array(peak_file[peak_file['lmk']=='p-']['time'])
+
+        return p_ladnmark_dict
+    
+
+def extract_all_landmarks(file, thr):
+    #file should be downsampling file 16khz
+    #thr should be a int number
+    obj1 = Landmarks_base(file)
+    obj2 = Localized_peaks(obj1, thr=thr)
+    [landmarks, pp_arr, pn_arr, peak_file] = obj2.localPeak()
+    p_base = P_landmark(obj1)
+    p_ladnmark_dict = p_base.find_P_landmark()
+    landmarks.update(p_ladnmark_dict)
+    return landmarks
