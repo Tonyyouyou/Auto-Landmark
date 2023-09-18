@@ -5,9 +5,9 @@
 import numpy as np
 from scipy import signal
 import argparse
-from methods.Basic.DTChk_Len1 import DTChk_Len1
-from methods.Basic.isscalar import isscalar
-from methods.Basic.is_vec import is_vec
+from methods.Advance.DTChk_Len1 import DTChk_Len1
+from methods.Advance.isscalar import isscalar
+from methods.Advance.is_vec import is_vec
 
 
 def _hanning(n):
@@ -153,19 +153,19 @@ def smooth(sig, knl, check_type=False):
     return out
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description='Smooth a signal with a kernel.')
-    parser.add_argument('--sig', '-s', type=float, nargs='+',
-                        help='signal to be smoothed')
-    parser.add_argument('--knl', '-k', type=float, nargs='+',
-                        help='kernel to smooth the signal with')
-    parser.add_argument('--check_type', '-c', action='store_true',
-                        help='check if kernel is an integer or a vector of length > 1')
-    args = parser.parse_args()
+# def main():
+#     parser = argparse.ArgumentParser(
+#         description='Smooth a signal with a kernel.')
+#     parser.add_argument('--sig', '-s', type=float, nargs='+',
+#                         help='signal to be smoothed')
+#     parser.add_argument('--knl', '-k', type=float, nargs='+',
+#                         help='kernel to smooth the signal with')
+#     parser.add_argument('--check_type', '-c', action='store_true',
+#                         help='check if kernel is an integer or a vector of length > 1')
+#     args = parser.parse_args()
 
-    print(smooth(sig=args.sig, knl=args.knl, check_type=args.check_type))
+#     print(smooth(sig=args.sig, knl=args.knl, check_type=args.check_type))
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
