@@ -139,6 +139,36 @@ class Localized_peaks:
     
     def __init__(self, Landmarks_base_obj, thr):
         self.peak_dict, self.length = Landmarks_base_obj.band_peak_detect(thr=thr)
+    
+    def pair_peaks(self, g_plus, g_minus):
+        """
+        Pair g+ and g- values such that each g+ is followed by a g-.
+
+        :param g_plus: List of g+ values (sorted in ascending order)
+        :param g_minus: List of g- values (sorted in ascending order)
+        :return: Two lists containing paired g+ and g- values
+        """
+
+        g_plus_paired = []
+        g_minus_paired = []
+
+        i, j = 0, 0
+        while i < len(g_plus) and j < len(g_minus):
+            # If the current g+ value is less than the current g- value, add it to the paired list and move to the next g+
+            if g_plus[i] < g_minus[j]:
+                g_plus_paired.append(g_plus[i])
+                i += 1
+            # If the current g- value is less than the current g+ value, add it to the paired list and move to the next g-
+            else:
+                g_minus_paired.append(g_minus[j])
+                j += 1
+
+        # Ensuring we only retain pairs of g+ and g-, so the lists have equal length
+        min_length = min(len(g_plus_paired), len(g_minus_paired))
+        g_plus_paired = g_plus_paired[:min_length]
+        g_minus_paired = g_minus_paired[:min_length]
+
+        return np.array(g_plus_paired), np.array(g_minus_paired)
 
     def localPeak(self):
         L = self.length
@@ -275,8 +305,9 @@ class Localized_peaks:
         voicing_fv['f-'] = voicing_fv['b_voicing'] * voicing_fv['neg']
 
 
-        landmarks['g+'] = pp_arr / 1000
-        landmarks['g-'] = pn_arr / 1000
+        g_plus_landmark, g_mins_landmark = self.pair_peaks(pp_arr / 1000, pn_arr / 1000)
+        landmarks['g+'] = g_plus_landmark
+        landmarks['g-'] = g_mins_landmark
         landmarks['s+'] = np.array(voicing_g['s+'][voicing_g['s+'] == 1].index) / 1000
         landmarks['s-'] = np.array(voicing_g['s-'][voicing_g['s-'] == 1].index) / 1000
         landmarks['b+'] = np.array(voicing_g['b+'][voicing_g['b+'] == 1].index) / 1000
