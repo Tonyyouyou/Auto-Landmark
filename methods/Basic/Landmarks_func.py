@@ -140,36 +140,48 @@ class Localized_peaks:
     def __init__(self, Landmarks_base_obj, thr):
         self.peak_dict, self.length = Landmarks_base_obj.band_peak_detect(thr=thr)
     
-    def pair_peaks(self, g_plus, g_minus):
-        """
-        Pair g+ and g- values such that each g+ is followed by a g-.
+    def paired_g_landmark_normal(self, g_plus, g_minus):
+        g_plus_sorted = sorted(g_plus)
+        g_minus_sorted = sorted(g_minus)
+        
+        new_g_plus = []
+        new_g_minus = []
 
-        :param g_plus: List of g+ values (sorted in ascending order)
-        :param g_minus: List of g- values (sorted in ascending order)
-        :return: Two lists containing paired g+ and g- values
-        """
+        for gm in g_minus_sorted:
+        
+            closest_gp = min(g_plus_sorted, key=lambda x: abs(x - gm))
+            
+    
+            if closest_gp < gm:
+                new_g_plus.append(closest_gp)
+                new_g_minus.append(gm)
+                g_plus_sorted.remove(closest_gp)
+            else:
+                pass
 
-        g_plus_paired = []
-        g_minus_paired = []
+        return np.array(new_g_plus), np.array(new_g_minus)
+
+    def paird_g_landmark_gminus(self, g_plus, g_minus):
+        g_plus_sorted = sorted(g_plus)
+        g_minus_sorted = sorted(g_minus)
+        
+        new_g_plus = []
+        new_g_minus = []
 
         i, j = 0, 0
-        while i < len(g_plus) and j < len(g_minus):
-            # If the current g+ value is less than the current g- value, add it to the paired list and move to the next g+
-            if g_plus[i] < g_minus[j]:
-                g_plus_paired.append(g_plus[i])
+
+        while i < len(g_plus_sorted) and j < len(g_minus_sorted):
+            if g_plus_sorted[i] < g_minus_sorted[j]:
+                if i == len(g_plus_sorted) - 1 or g_plus_sorted[i + 1] > g_minus_sorted[j]:
+                    new_g_plus.append(g_plus_sorted[i])
+                    new_g_minus.append(g_minus_sorted[j])
+                    j += 1
                 i += 1
-            # If the current g- value is less than the current g+ value, add it to the paired list and move to the next g-
             else:
-                g_minus_paired.append(g_minus[j])
                 j += 1
 
-        # Ensuring we only retain pairs of g+ and g-, so the lists have equal length
-        min_length = min(len(g_plus_paired), len(g_minus_paired))
-        g_plus_paired = g_plus_paired[:min_length]
-        g_minus_paired = g_minus_paired[:min_length]
-
-        return np.array(g_plus_paired), np.array(g_minus_paired)
-
+        return np.array(new_g_plus), np.array(new_g_minus)
+    
     def localPeak(self):
         L = self.length
         peak_dict = self.peak_dict
@@ -195,10 +207,13 @@ class Localized_peaks:
 
             localized_peak_p_dict['band_' +  str(i)] = peaks_fp[index_fp]
             localized_peak_n_dict['band_' + str(i)] = peaks_fn[index_fn]
+        
 
+        
         pp_arr = localized_peak_p_dict['band_1']
         pn_arr = localized_peak_n_dict['band_1']
-
+        
+    
         # g+ and g- landmarks
         landmarks['g+'] = pp_arr
         landmarks['g-'] = pn_arr
@@ -305,9 +320,13 @@ class Localized_peaks:
         voicing_fv['f-'] = voicing_fv['b_voicing'] * voicing_fv['neg']
 
 
-        g_plus_landmark, g_mins_landmark = self.pair_peaks(pp_arr / 1000, pn_arr / 1000)
-        landmarks['g+'] = g_plus_landmark
-        landmarks['g-'] = g_mins_landmark
+        if len(pp_arr) >= len(pn_arr):
+            g_plus_landmark, g_mins_landmark = self.paired_g_landmark_normal(pp_arr, pn_arr)
+        else:
+            g_plus_landmark, g_mins_landmark = self.paird_g_landmark_gminus(pp_arr, pn_arr)
+            
+        landmarks['g+'] = g_plus_landmark / 1000
+        landmarks['g-'] = g_mins_landmark / 1000
         landmarks['s+'] = np.array(voicing_g['s+'][voicing_g['s+'] == 1].index) / 1000
         landmarks['s-'] = np.array(voicing_g['s-'][voicing_g['s-'] == 1].index) / 1000
         landmarks['b+'] = np.array(voicing_g['b+'][voicing_g['b+'] == 1].index) / 1000
