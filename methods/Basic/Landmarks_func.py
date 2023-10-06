@@ -1,8 +1,3 @@
-##############################################
-######### Author: Zhaocheng (David) Huang  #########
-##############################################
-# Modified by Xiangyu(Tony) Zhang
-
 import numpy as np
 import pandas as pd
 
