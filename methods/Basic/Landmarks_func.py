@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 from scipy import signal
-from .thinkdsp import read_wave
+from thinkdsp import read_wave
 # import thinkdsp as dsp
 from scipy.signal import butter, lfilter, freqz
 from scipy.fftpack import fft, rfft, dct, fftshift
@@ -348,7 +348,7 @@ class P_landmark:
         N = int(Fs / 1000 * frame_L)  # Number of samples per window
         n_frames = int(len(Y) / delta)  # Number of frames
 
-            # Performing auto correlation on each frame
+        # Performing auto correlation on each frame
         Ef = np.array([])
         for fr in range(n_frames):
             if ((fr * delta) + N) < len(Y):
@@ -413,7 +413,7 @@ class P_landmark:
         return p_ladnmark_dict
     
 
-def extract_all_landmarks(file, thr):
+def extract_all_landmarks(file, thr=10):
     #file should be downsampling file 16khz
     #thr should be a int number
     obj1 = Landmarks_base(file)
