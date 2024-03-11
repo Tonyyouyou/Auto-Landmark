@@ -1,0 +1,26 @@
+train:
+  data_type: train
+  data_folder_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/Data
+  label_csv_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/Label/train_split_Depression_AVEC2017.csv
+  output_path: /home/561/xz4320/LLM_Depression_Detection/egs/DAIC/train
+  dataset_name: 'DAIC'
+
+dev:
+  data_type: dev
+  data_folder_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/Data
+  label_csv_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/Label/dev_split_Depression_AVEC2017.csv
+  output_path: /home/561/xz4320/LLM_Depression_Detection/egs/DAIC/dev
+  dataset_name: 'DAIC'
+
+test:
+  data_type: test
+  data_folder_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/Data
+  label_csv_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/Label/test_split_Depression_AVEC2017.csv
+  output_path: /home/561/xz4320/LLM_Depression_Detection/egs/DAIC/test
+  dataset_name: 'DAIC'
+
+
+segments:
+  data_type: train
+  data_path: /home/561/xz4320/LLM_Depression_Detection/egs/DAIC
+  output_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/segment_data/train

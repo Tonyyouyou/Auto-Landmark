@@ -315,10 +315,11 @@ class Localized_peaks:
         voicing_fv['f-'] = voicing_fv['b_voicing'] * voicing_fv['neg']
 
 
-        if len(pp_arr) >= len(pn_arr):
-            g_plus_landmark, g_mins_landmark = self.paired_g_landmark_normal(pp_arr, pn_arr)
-        else:
-            g_plus_landmark, g_mins_landmark = self.paird_g_landmark_gminus(pp_arr, pn_arr)
+        # Paired g+ and g- landmark
+        # if len(pp_arr) >= len(pn_arr):
+        #     g_plus_landmark, g_mins_landmark = self.paired_g_landmark_normal(pp_arr, pn_arr)
+        # else:
+        #     g_plus_landmark, g_mins_landmark = self.paird_g_landmark_gminus(pp_arr, pn_arr)
             
         landmarks['g+'] = g_plus_landmark / 1000
         landmarks['g-'] = g_mins_landmark / 1000
