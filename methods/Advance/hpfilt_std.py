@@ -31,4 +31,5 @@ def hpfilt_std(SIGNAL, RATE, AGE=''):
     # Process each column separately and remove low-frequency components
     hpsig = desmooth(SIGNAL, -(1 + 2 * round(RATE / lm_hplim_std(AGE))))
     # SIZE(hpsig) = SIZE(SIGNAL)
+
     return hpsig

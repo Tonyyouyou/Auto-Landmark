@@ -68,18 +68,18 @@ def maxf0_std(AGE_GENDER):
     return maxf0, minf0
 
 # def test_maxf0_std():
-
+#
 #     # Example 1
-#     x1 = maxf0_std('mf')
+#     x1 = maxf0_std('i')
 #     print(x1)
-
+#
 #     # Example 2
 #     x2 = maxf0_std(['m', 'f'])
 #     print(x2)
-
+#
 #     # Example 3
 #     x3 = maxf0_std(['mfi', 'c', 'e'])
 #     print(x3)
-
+#
 # # Run the test code
 # test_maxf0_std()

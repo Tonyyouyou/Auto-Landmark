@@ -1,6 +1,6 @@
 import librosa
 import numpy as np
-from .wavread_freq import wavread_freq
+from wavread_freq import wavread_freq  # 这儿保留原本的相对路径，会在下文无法引用wavread_freq
 
 def waveform_freq(SIGNAL, Fs):
     """
@@ -40,11 +40,12 @@ def waveform_freq(SIGNAL, Fs):
     return arr, fs0  # Return audio signal data and sampling rate
 
 # # Example 1: Read a .wav audio file and specify the sampling rate
-# file_path = 'D:/python object/spx1.wav'
+# # file_path = 'D:/python object/spx1.wav'
+# file_path = 'spx2.wav'
 # desired_sampling_rate = 16000
 # Audio_Signal, Sampling_Rate = waveform_freq(file_path, desired_sampling_rate)
 # # Print the audio signal and sampling rate
-# print('Audio Signal:', Audio_Signal)
+# print('Audio Signal:', Audio_Signal,Audio_Signal.dtype)
 # print('Sampling Rate:', Sampling_Rate)
 
 # # Example 2: Get the audio signal from a variable
