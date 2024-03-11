@@ -1,5 +1,5 @@
 import numpy as np
-from .lm_labels import lm_labels
+from lm_labels import lm_labels
 
 def lm_codes(*args):
     """
@@ -35,18 +35,22 @@ def lm_codes(*args):
         'END_SEG': '-T'
     }
 
-   
-    array_args = [np.array([code_label_mapping[arg.upper()]]) if isinstance(arg, str) else arg for arg in args]
+    # 输出plus_p有问题
+    # array_args = [np.array([code_label_mapping[arg.upper()]]) if isinstance(arg, str) else arg for arg in args]
 
+    # outargs = []
+    # for arg in array_args:
+    #     outargs.extend(lm_labels(arg))
 
+    array_args = {value: index + 1 for index, value in enumerate(list(code_label_mapping.keys()))}
     outargs = []
-    for arg in array_args:
-        outargs.extend(lm_labels(arg))
-
+    for arg in args:
+        if arg in array_args:
+            outargs.append(array_args[arg])
     return outargs
 
 # # 示例：测试 lm_codes 函数
-# output = lm_codes('PLUS_G','MINUS_B')
+# output = lm_codes('PLUS_P','MINUS_P')
 # print(output)
 # output = lm_codes('MINUS_G', 'PLUS_G', 'MINUS_B', 'PLUS_B', 'MINUS_S', 'PLUS_S', 'MINUS_F', 'PLUS_F', 'MINUS_V', 'PLUS_V')
 # print(output)
