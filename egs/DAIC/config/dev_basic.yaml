@@ -1,0 +1,4 @@
+segments:
+  data_type: dev
+  data_path: /home/561/xz4320/Auto-Landmark/egs/DAIC/data
+  output_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/segment_data/dev

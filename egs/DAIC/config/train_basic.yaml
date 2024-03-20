@@ -1,0 +1,9 @@
+segments:
+  data_type: train
+  data_path: /home/561/xz4320/Auto-Landmark/egs/DAIC/data
+  output_path: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/segment_data/train
+
+
+data_folder: /g/data/wa66/Xiangyu/Data/DAIC-WOZ/segment_data/train
+output_path: /g/data/wa66/Xiangyu/Landmark_dataset/auto-landmark
+landmark_type: ['g+', 'g-', 's+', 's-', 'b+', 'b-', 'v+','v-', 'f+', 'f-', 'p+', 'p-']

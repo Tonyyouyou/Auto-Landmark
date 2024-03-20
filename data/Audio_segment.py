@@ -4,15 +4,17 @@ import yaml
 from pydub import AudioSegment
 
 class segment_audio:
-    def __init__(self, data_type, data_path, output_path):
+    def __init__(self, data_type, data_path, output_path, outputfrequency=16000):
         self.data_type = data_type
         self.data_path = data_path
         self.output_path = output_path
+        self.outputfrequency = outputfrequency
 
     def split_audio(self, file_path, start_time, end_time, output_path, output_name, format='wav'):
         #Input unit should be second
 
         audio = AudioSegment.from_file(file_path, format=format)
+        audio = audio.set_frame_rate(self.outputfrequency)
         
         start_time = start_time * 1000
         end_time = end_time * 1000

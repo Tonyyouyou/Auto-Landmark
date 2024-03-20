@@ -320,9 +320,11 @@ class Localized_peaks:
         #     g_plus_landmark, g_mins_landmark = self.paired_g_landmark_normal(pp_arr, pn_arr)
         # else:
         #     g_plus_landmark, g_mins_landmark = self.paird_g_landmark_gminus(pp_arr, pn_arr)
-            
-        landmarks['g+'] = g_plus_landmark / 1000
-        landmarks['g-'] = g_mins_landmark / 1000
+        # landmarks['g+'] = g_plus_landmark / 1000
+        # landmarks['g-'] = g_mins_landmark / 1000
+        
+        landmarks['g+'] = pp_arr / 1000
+        landmarks['g-'] = pn_arr / 1000
         landmarks['s+'] = np.array(voicing_g['s+'][voicing_g['s+'] == 1].index) / 1000
         landmarks['s-'] = np.array(voicing_g['s-'][voicing_g['s-'] == 1].index) / 1000
         landmarks['b+'] = np.array(voicing_g['b+'][voicing_g['b+'] == 1].index) / 1000
@@ -414,7 +416,7 @@ class P_landmark:
         return p_ladnmark_dict
     
 
-def extract_all_landmarks(file, thr=10):
+def extract_all_landmarks(file, landmark_remove, thr=10):
     #file should be downsampling file 16khz
     #thr should be a int number
     obj1 = Landmarks_base(file)
@@ -423,4 +425,8 @@ def extract_all_landmarks(file, thr=10):
     p_base = P_landmark(obj1)
     p_ladnmark_dict = p_base.find_P_landmark()
     landmarks.update(p_ladnmark_dict)
+
+    if landmark_remove is not None:
+        landmarks = {k: v for k, v in landmarks.items() if k not in landmark_remove}
+
     return landmarks

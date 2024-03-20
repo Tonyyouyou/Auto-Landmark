@@ -126,4 +126,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print("kaldi_prep.py is starting...")
     main()
