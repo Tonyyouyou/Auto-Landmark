@@ -1,5 +1,5 @@
 import numpy as np
-from methods.Advance.smooth import smooth  # Import the custom smooth function
+from smooth import smooth  # Import the custom smooth function
 
 def desmooth(SIG, KNL):
     if KNL == '?':  # Check if the value of KNL is '?'

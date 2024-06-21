@@ -1,6 +1,6 @@
 import numpy as np
-from methods.Advance.desmooth import desmooth  # Import the desmooth function
-from methods.Advance.lm_hplim_std import lm_hplim_std  # Import the standard high-pass filter cutoff frequency function
+from desmooth import desmooth  # Import the desmooth function
+from lm_hplim_std import lm_hplim_std  # Import the standard high-pass filter cutoff frequency function
 
 def hpfilt_std(SIGNAL, RATE, AGE=''):
     """

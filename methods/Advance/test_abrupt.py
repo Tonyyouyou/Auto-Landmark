@@ -102,12 +102,15 @@ LF_LATE = 8
 from wavread_freq import wavread_freq
 hpsig = np.loadtxt('/home/561/xz4320/Auto-Landmark/methods/Advance/test_example/hpsig.txt')
 
-# hpsig = wavread_freq('/g/data/wa66/Xiangyu/Data/TIMIT/TRAIN/DR1/FCJF0/SA1.WAV', 16000)
-Fs = 16000
-age = 'adult'
-PREV_RPRTHR = None
-# voicing = np.loadtxt('voicing.txt')
-pts = 125
+hpsig1, _ = wavread_freq('/home/561/xz4320/Auto-Landmark/methods/Advance/test_example/spx2.wav', 16000)
+# hpsig = hpfilt_std(hpsig, 16000)
+print('hpsig', hpsig.shape)
+print('hpsig1', hpsig1.shape)
+# Fs = 16000
+# age = 'adult'
+# PREV_RPRTHR = None
+# # voicing = np.loadtxt('voicing.txt')
+# pts = 125
 
-lm = abrupt_lms(hpsig, Fs, age, PREV_RPRTHR, '',None,pts)
-print(lm)
+# lm = abrupt_lms(hpsig, Fs, age, PREV_RPRTHR, '',None,pts)
+# print(lm)

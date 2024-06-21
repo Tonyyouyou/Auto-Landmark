@@ -5,9 +5,9 @@
 import numpy as np
 from scipy import signal
 import argparse
-from methods.Advance.DTChk_Len1 import DTChk_Len1
-from methods.Advance.isscalar import isscalar
-from methods.Advance.is_vec import is_vec
+from DTChk_Len1 import DTChk_Len1
+from isscalar import isscalar
+from is_vec import is_vec
 
 
 def _hanning(n):
