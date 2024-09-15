@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 from scipy import signal
-from thinkdsp import read_wave
+from .thinkdsp import read_wave
 # import thinkdsp as dsp
 from scipy.signal import butter, lfilter, freqz
 from scipy.fftpack import fft, rfft, dct, fftshift
@@ -416,7 +416,7 @@ class P_landmark:
         return p_ladnmark_dict
     
 
-def extract_all_landmarks(file, landmark_remove, thr=10):
+def extract_all_landmarks(file, landmark_remove=None, thr=10):
     #file should be downsampling file 16khz
     #thr should be a int number
     obj1 = Landmarks_base(file)
